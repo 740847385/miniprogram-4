@@ -12,4 +12,10 @@
 
     <image src="{{activityD.entrance_img}}" class="activity"></image>
 
+
+    <s-spu-scroll wx:if="{{themeE.online}}" theme="{{themeE}}" spu-list="{{themeESpu}}">
+
+    </s-spu-scroll>
+
+    <image src="{{themeF.entrance_img}}" class="quality"></image>
 </view>
