@@ -7,6 +7,8 @@ import {
 import {Banner} from "../../model/banner"
 import {Category} from "../../model/category";
 import {Activity} from "../../model/activity";
+import {SpuPaging} from "../../model/spu-paging";
+import date from "../../miniprogram_npm/lin-ui/common/async-validator/validator/date";
 
 Page({
 
@@ -18,7 +20,9 @@ Page({
         bannerB: null,
         grid: [],
         activityD: null,
-        themeE: null
+        themeE: null,
+        spuPaging:null,
+        loadingType:'loading'
 
     },
 
@@ -27,8 +31,21 @@ Page({
      */
     async onLoad() {
         this.initAllData()
+        this.initBottomSpuList()
 
     },
+
+    async initBottomSpuList() {
+        const paging = await SpuPaging.getLatestPaging()
+        this.data.spuPaging =paging
+        const data = await paging.getMoreData()
+        if (!data) {
+            return
+        }
+        wx.lin.renderWaterFlow(data.items)
+    },
+
+
     async initAllData() {
 
         const theme = new Theme();
@@ -46,13 +63,13 @@ Page({
 
             }
         }
-        const  themeF=await theme.getHomeLocationF()
+        const themeF = await theme.getHomeLocationF()
 
         const grid = await Category.getGridCategory()
         const activityD = await Activity.getHomeLocationD()
 
-        const  bannerG =await Banner.getHomeLocationG()
-        const themeH =await theme.getHomeLocationH()
+        const bannerG = await Banner.getHomeLocationG()
+        const themeH = await theme.getHomeLocationH()
 
         console.log(themeH)
         this.setData({
@@ -79,8 +96,18 @@ Page({
     /**
      * 页面上拉触底事件的处理函数
      */
-    onReachBottom() {
+    async onReachBottom() {
+        const  data =await this.data.spuPaging.getMoreData()
+        if (!data){
+            return
+        }
+        wx.lin.renderWaterFlow(data.items)
 
+        if(!data.moreData){
+            this.setData({
+                loadingType:'end'
+            })
+        }
     },
 
     /**
