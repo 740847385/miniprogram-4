@@ -1,9 +1,20 @@
-class Fence {
-    valueTitles = []
+import {Cell} from "./cell";
 
-    pushValueTitle(title) {
-        this.valueTitles.push(title)
+class Fence {
+    cells =[]
+    spece
+
+    constructor(specs) {
+        this.spece=specs
     }
+    init(){
+        this.spece.forEach(s=>{
+            // this.pushValueTitle(s.value)
+            const cell =new Cell(s)
+            this.cells.push(cell)
+        })
+    }
+
 }
 
 export {
