@@ -12,19 +12,6 @@ class FenceGroup {
         this.skuList = spu.sku_list
     }
 
-    initFences1() {
-        const matrix = this._createMatrix(this.skuList)
-        const fences = []
-        let currentJ = -1;
-        matrix.forEach((element, i, j) => {
-            if (currentJ !== j) {
-                currentJ = j
-                fences[currentJ] = this._createFence(element)
-            }
-            fences[currentJ].pushValueTitle(element.value)
-        })
-        console.log(fences)
-    }
 
     initFences() {
         const matrix = this._createMatrix(this.skuList)
@@ -35,6 +22,8 @@ class FenceGroup {
             fence.init()
             fences.push(fence)
         })
+
+        this.fences = fences
         console.log(fences)
     }
 
